@@ -7,8 +7,8 @@ use Test::Most;
 # replace-the-whole-set behavior as a deliberate opt-in.
 #
 # Three parent classes share the same physical 'artist'/'album' tables (the
-# mapping-several-result-classes-to-one-table pattern is precedented by
-# t/dbio/nested-options.t): ArtistAD (allow_destroy only), ArtistDO
+# mapping-several-result-classes-to-one-table pattern is also used in the
+# DBIO::Valiant distribution): ArtistAD (allow_destroy only), ArtistDO
 # (delete_omitted only), ArtistBoth (both).  A fourth, ArtistDOCode, covers
 # delete_omitted as a coderef.
 
