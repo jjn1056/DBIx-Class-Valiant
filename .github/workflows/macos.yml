@@ -1,0 +1,48 @@
+name: MacOS testing and code coverage
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ['macOS-latest']
+        perl: [ '5.26', '5.28', '5.30', '5.32', 'latest' ]
+    runs-on: ${{ matrix.os }}
+    name: Perl ${{ matrix.perl }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+          install-modules-with: cpanm
+          install-modules-args: --with-develop --with-configure
+      - name: perl -V
+        run: perl -V
+      - name: check ENV
+        run: |
+          which perl
+          which cpanm
+          which prove
+      - name: Install author/build dependencies
+        run: |
+          cpanm --quiet --notest --skip-satisfied Devel::Cover::Report::Codecov
+          cpanm --quiet --notest --skip-satisfied Devel::Cover::Report::Codecovbash
+          cpanm --quiet --notest --skip-satisfied Archive::Tar
+          cpanm --quiet --notest --skip-satisfied Archive::Zip
+      - name: Install project dependencies
+        run: |
+          cpanm --verbose --installdeps .
+      - name: Run tests
+        run: prove -lr t
+      - name: Code coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          PERL5OPT=-MDevel::Cover=+ignore,^t,prove$  prove -lr t
+          cover -report codecovbash
+          curl -s https://codecov.io/bash | bash

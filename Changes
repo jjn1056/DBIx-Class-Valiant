@@ -1,0 +1,10 @@
+The following logs changes for the CPAN distribution DBIx-Class-Valiant
+
+0.001001  {{TBD}}
+        - Initial standalone release.  DBIx::Class::Valiant provides
+          Ruby-on-Rails-inspired, Valiant-powered domain validations for
+          DBIx::Class: filter-on-new, validate-on-insert/update, nested
+          creates/updates across relationships (accept_nested_for), and
+          FormBuilder glue.
+        - Extracted from the Valiant distribution with development history
+          preserved.
