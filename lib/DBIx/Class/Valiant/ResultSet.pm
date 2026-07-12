@@ -244,8 +244,8 @@ DBIx::Class::Valiant::ResultSet - Validation support for resultsets
 
     __PACKAGE__->load_components('Valiant::ResultSet');
 
-See <example> directory in the distribution for a more complete example
-setup and application.
+See the C<t/dbic> tests in the distribution for more complete example
+setups.
 
 =head1 DESCRIPTION
 
