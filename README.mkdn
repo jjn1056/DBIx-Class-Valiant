@@ -43,22 +43,20 @@ on your base result / resultset classes:
       Valiant::ResultSet
     /);
 
-There's an example schema in the `/example` directory of the distribution to give you
-some hints.
+There's an example schema under `t/lib/Schema` in the distribution (exercised by the
+test suite in `t/dbic`) to give you some hints.
 
 **NOTE** If you are using more than one component, you need to add these first. Hopefully
 that is a restriction we can figure out how to remove (patches welcomed).
 
 # DESCRIPTION
 
-**NOTE**This works as in 'it passed my existing tests'.   Feel free to use it
-if you are willing to get into the code, review / submit test cases, etc.   Also at some
-point this will be pulled into its own distribution so please keep in mind.   I
-will feel totally free to break backward compatibility on this until it seems
-stable.  That being said support for validations at the single result level is pretty
-firm and I can't imagine significant changes.  Support for validating nested results
-(results that have has\_many or similar relationships) is likely to evolve as bugs are
-reported.
+**NOTE** This is beta software: it works as in 'it passed my existing tests'.  Feel free
+to use it if you are willing to get into the code, review / submit test cases, etc.
+Support for validations at the single result level is pretty firm and I can't imagine
+significant changes.  Support for validating nested results (results that have has\_many
+or similar relationships) is likely to evolve as bugs are reported, and I will feel free
+to break backward compatibility on the nested support until it seems stable.
 
 **NOTE** Update: I consider this code to be beta stage and will now only break things if
 its absolutely necessary to fix critical bugs or security matters.
@@ -80,9 +78,8 @@ feature and bug reports / test cases (or patches) welcomed.
 Documentation in this package only covers how [Valiant](https://metacpan.org/pod/Valiant) is glued into your result sources
 and any local differences in behavior.   If you need a comprehensive overview of how
 [Valiant](https://metacpan.org/pod/Valiant) works you should refer to that package.  Additionally if you are looking for how
-to generate HTML forms you should refer to [Valiant::HTML::Form](https://metacpan.org/pod/Valiant%3A%3AHTML%3A%3AForm), [Valiant::HTML::FormTags](https://metacpan.org/pod/Valiant%3A%3AHTML%3A%3AFormTags)
-and [Valiant::HTML::FormBuilder](https://metacpan.org/pod/Valiant%3A%3AHTML%3A%3AFormBuilder) (or refer to the example application under directory
-'/example' for this distribution.)
+to generate HTML forms you should refer to [Valiant::HTML::Util::Form](https://metacpan.org/pod/Valiant%3A%3AHTML%3A%3AUtil%3A%3AForm),
+[Valiant::HTML::Util::FormTags](https://metacpan.org/pod/Valiant%3A%3AHTML%3A%3AUtil%3A%3AFormTags) and [Valiant::HTML::FormBuilder](https://metacpan.org/pod/Valiant%3A%3AHTML%3A%3AFormBuilder).
 
 ## Adding validations and filters
 
@@ -331,7 +328,7 @@ The object will have the invalid values properly populated:
 You might find this useful for building error message responses in for example html forms or other types
 or error responses.
 
-See `example` directory for web application using [Catalyst](https://metacpan.org/pod/Catalyst) that uses this for more details.
+See the test suite in `t/dbic` for worked examples of this.
 
 # NESTED VALIDATIONS
 
@@ -503,7 +500,7 @@ needed for a data storage layer where integrity is most important).
       my $dt = $strp->parse_datetime($value);
       return unless $dt;  # Skip this validation if the user didn't give us a date time
                           # format (that's caught by ->looks_like_a_datetime).
-      $self->errors->add($attribute_name, 'must be in the future') unless $dt > DateTime->now);
+      $self->errors->add($attribute_name, 'must be in the future') unless $dt > DateTime->now;
     }
 
     package Example::Schema::Result::PersonRole;
@@ -646,8 +643,12 @@ update on an already-in-storage parent (whether or not the relationship was pref
 passing `[]` deletes the entire collection.  See
 ["delete\_omitted" in DBIx::Class::Valiant::Result](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AValiant%3A%3AResult#delete_omitted) for details, including its coderef form.
 
-This example is far from complete, for now see example in `example` directory of the distribution
-and more examples in the tests directory.  In particular this example doesn't really cover all the
+The full set of `accept_nested_for` options (`allow_destroy`, `delete_omitted`,
+`reject_if`, `limit`, `update_only`, `find_with_uniques`) is documented in
+[DBIx::Class::Valiant::Result](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AValiant%3A%3AResult).
+
+This example is far from complete, for now see the many worked examples in the `t/dbic`
+tests directory.  In particular this example doesn't really cover all the
 ins and outs of deleting.  An overall tutorial is in the works but example submission or questions
 (that could eventually lead to a FAQ) are very welcomed.
 
@@ -675,12 +676,18 @@ development team recommends staying away fron using the many to many code.
 
 # SEE ALSO
 
-[Valiant](https://metacpan.org/pod/Valiant), [DBIx::Class::Valiant::Result](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AValiant%3A%3AResult), [DBIx::Class::Valiant::ResultSet](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AValiant%3A%3AResultSet), [DBIx::Class](https://metacpan.org/pod/DBIx%3A%3AClass)
+[Valiant](https://metacpan.org/pod/Valiant), [DBIx::Class::Valiant::Result](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AValiant%3A%3AResult), [DBIx::Class::Valiant::ResultSet](https://metacpan.org/pod/DBIx%3A%3AClass%3A%3AValiant%3A%3AResultSet), [DBIx::Class](https://metacpan.org/pod/DBIx%3A%3AClass).
+
+[DBIO::Valiant](https://metacpan.org/pod/DBIO%3A%3AValiant) is the port of this distribution to DBIO, the asynchronous fork of
+[DBIx::Class](https://metacpan.org/pod/DBIx%3A%3AClass).
 
 # AUTHOR
 
-See [Valiant](https://metacpan.org/pod/Valiant)
+John Napiorkowski [email:jjnapiork@cpan.org](email:jjnapiork@cpan.org)
 
 # COPYRIGHT & LICENSE
 
-See [Valiant](https://metacpan.org/pod/Valiant)
+Copyright 2026, John Napiorkowski [email:jjnapiork@cpan.org](email:jjnapiork@cpan.org)
+
+This library is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
