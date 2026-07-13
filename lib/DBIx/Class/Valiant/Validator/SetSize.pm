@@ -131,12 +131,12 @@ translation tags.
 
 This validator supports the follow shortcut forms:
 
-    validates attribute => ( result_set => [1,4], ... );
+    validates attribute => ( set_size => [1,4], ... );
 
 Which is the same as:
 
     validates attribute => (
-      result_set => {
+      set_size => {
         min => 1,
         max => 4,
       }

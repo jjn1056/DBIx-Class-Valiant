@@ -52,22 +52,20 @@ on your base result / resultset classes:
       Valiant::ResultSet
     /);
 
-There's an example schema in the C</example> directory of the distribution to give you
-some hints.
+There's an example schema under C<t/lib/Schema> in the distribution (exercised by the
+test suite in C<t/dbic>) to give you some hints.
 
 B<NOTE> If you are using more than one component, you need to add these first. Hopefully
 that is a restriction we can figure out how to remove (patches welcomed).
 
 =head1 DESCRIPTION
 
-B<NOTE>This works as in 'it passed my existing tests'.   Feel free to use it
-if you are willing to get into the code, review / submit test cases, etc.   Also at some
-point this will be pulled into its own distribution so please keep in mind.   I
-will feel totally free to break backward compatibility on this until it seems
-stable.  That being said support for validations at the single result level is pretty
-firm and I can't imagine significant changes.  Support for validating nested results
-(results that have has_many or similar relationships) is likely to evolve as bugs are
-reported.
+B<NOTE> This is beta software: it works as in 'it passed my existing tests'.  Feel free
+to use it if you are willing to get into the code, review / submit test cases, etc.
+Support for validations at the single result level is pretty firm and I can't imagine
+significant changes.  Support for validating nested results (results that have has_many
+or similar relationships) is likely to evolve as bugs are reported, and I will feel free
+to break backward compatibility on the nested support until it seems stable.
 
 B<NOTE> Update: I consider this code to be beta stage and will now only break things if
 its absolutely necessary to fix critical bugs or security matters.
@@ -89,9 +87,8 @@ feature and bug reports / test cases (or patches) welcomed.
 Documentation in this package only covers how L<Valiant> is glued into your result sources
 and any local differences in behavior.   If you need a comprehensive overview of how
 L<Valiant> works you should refer to that package.  Additionally if you are looking for how
-to generate HTML forms you should refer to L<Valiant::HTML::Form>, L<Valiant::HTML::FormTags>
-and L<Valiant::HTML::FormBuilder> (or refer to the example application under directory
-'/example' for this distribution.)
+to generate HTML forms you should refer to L<Valiant::HTML::Util::Form>,
+L<Valiant::HTML::Util::FormTags> and L<Valiant::HTML::FormBuilder>.
 
 =head2 Adding validations and filters
 
@@ -340,7 +337,7 @@ The object will have the invalid values properly populated:
 You might find this useful for building error message responses in for example html forms or other types
 or error responses.
 
-See C<example> directory for web application using L<Catalyst> that uses this for more details.
+See the test suite in C<t/dbic> for worked examples of this.
 
 =head1 NESTED VALIDATIONS
 
@@ -512,7 +509,7 @@ needed for a data storage layer where integrity is most important).
       my $dt = $strp->parse_datetime($value);
       return unless $dt;  # Skip this validation if the user didn't give us a date time
                           # format (that's caught by ->looks_like_a_datetime).
-      $self->errors->add($attribute_name, 'must be in the future') unless $dt > DateTime->now);
+      $self->errors->add($attribute_name, 'must be in the future') unless $dt > DateTime->now;
     }
 
     package Example::Schema::Result::PersonRole;
@@ -655,8 +652,12 @@ update on an already-in-storage parent (whether or not the relationship was pref
 passing C<< [] >> deletes the entire collection.  See
 L<DBIx::Class::Valiant::Result/delete_omitted> for details, including its coderef form.
 
-This example is far from complete, for now see example in C<example> directory of the distribution
-and more examples in the tests directory.  In particular this example doesn't really cover all the
+The full set of C<accept_nested_for> options (C<allow_destroy>, C<delete_omitted>,
+C<reject_if>, C<limit>, C<update_only>, C<find_with_uniques>) is documented in
+L<DBIx::Class::Valiant::Result>.
+
+This example is far from complete, for now see the many worked examples in the C<t/dbic>
+tests directory.  In particular this example doesn't really cover all the
 ins and outs of deleting.  An overall tutorial is in the works but example submission or questions
 (that could eventually lead to a FAQ) are very welcomed.
 
@@ -683,15 +684,21 @@ Happy to take patches for improvements to anyone that feels strongly about it.  
 development team recommends staying away fron using the many to many code.
 
 =head1 SEE ALSO
- 
-L<Valiant>, L<DBIx::Class::Valiant::Result>, L<DBIx::Class::Valiant::ResultSet>, L<DBIx::Class>
+
+L<Valiant>, L<DBIx::Class::Valiant::Result>, L<DBIx::Class::Valiant::ResultSet>, L<DBIx::Class>.
+
+L<DBIO::Valiant> is the port of this distribution to DBIO, the asynchronous fork of
+L<DBIx::Class>.
 
 =head1 AUTHOR
- 
-See L<Valiant>
+
+John Napiorkowski L<email:jjnapiork@cpan.org>
 
 =head1 COPYRIGHT & LICENSE
- 
-See L<Valiant>
+
+Copyright 2026, John Napiorkowski L<email:jjnapiork@cpan.org>
+
+This library is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
 
 =cut

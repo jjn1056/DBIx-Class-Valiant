@@ -89,6 +89,7 @@ sub accept_nested_for {
     reject_if => 0,
     limit => 0,
     update_only => 0,
+    find_with_uniques => 0,
   );
 
   my @existing = @{$class->_nested};
@@ -589,9 +590,9 @@ sub set_m2m_related_from_params {
   } elsif(ref($params) eq 'ARRAY') { 
     @param_rows = @{$params || []};
   } else {
-    # I think if we are here its because the nests set is
-    # empty and we can ignore it for now but... not 100% sure :)
-    next;
+    # An undefined nested set means there's nothing to do; anything else
+    # non reference is a caller mistake.
+    return unless defined $params;
     die "We expect '$params' to be some sort of reference but its not!";
   }
   debug 2, "Setting m2m relation '$related' for @{[ ref $self ]} via '$relation' => '$foreign_relation'";
@@ -631,9 +632,9 @@ sub set_multi_related_from_params {
   } elsif(ref($params) eq 'ARRAY') { 
     @param_rows = @{$params || []};
   } else {
-    # I think if we are here its because the nests set is
-    # empty and we can ignore it for now but... not 100% sure :)
-    next;
+    # An undefined nested set means there's nothing to do; anything else
+    # non reference is a caller mistake.
+    return unless defined $params;
     die "We expect '$params' to be some sort of reference but its not!";
   }
 
@@ -1389,7 +1390,7 @@ Builds a related result into the cache. The result is only in memory; it can be 
 but is not inserted unless specified later.
 
 You might use these methods if you are validating a nested results but the results are not already in
-the database (see C<example> directory for an application that uses this).
+the database (see the C<t/dbic> tests for examples).
 
 =head1 AUTHOR
  
@@ -1401,7 +1402,7 @@ L<Valiant>, L<DBIx::Class>
 
 =head1 COPYRIGHT & LICENSE
  
-Copyright 2020, John Napiorkowski L<email:jjnapiork@cpan.org>
+Copyright 2026, John Napiorkowski L<email:jjnapiork@cpan.org>
  
 This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

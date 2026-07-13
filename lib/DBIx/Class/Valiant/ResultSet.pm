@@ -244,8 +244,8 @@ DBIx::Class::Valiant::ResultSet - Validation support for resultsets
 
     __PACKAGE__->load_components('Valiant::ResultSet');
 
-See <example> directory in the distribution for a more complete example
-setup and application.
+See the C<t/dbic> tests in the distribution for more complete example
+setups.
 
 =head1 DESCRIPTION
 
@@ -281,17 +281,19 @@ which presets the enable or disable value.
 This is just a shortcut for "->new_result(+{})" and exists mostly to provide expected API
 for L<Valiant::HTML::FormBuilder>.
 
-=head1 AUTHOR
- 
-John Napiorkowski L<email:jjnapiork@cpan.org>
- 
+=head2 contains ($row)
+
+Returns true if the resultset contains a row with the same primary key values as the
+given row (rows marked as removed are not considered).  Used by the nested validation
+code and handy in tests.
+
 =head1 SEE ALSO
- 
+
 L<Valiant>, L<DBIx::Class>, L<DBIx::Class::Valiant>
 
 =head1 AUTHOR
 
-See L<Valiant>.
+John Napiorkowski L<email:jjnapiork@cpan.org>
 
 =head1 COPYRIGHT & LICENSE
 
