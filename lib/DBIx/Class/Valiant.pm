@@ -3,6 +3,9 @@ package DBIx::Class::Valiant;
 use strict;
 use warnings;
 
+our $VERSION = '0.001001';
+$VERSION = eval $VERSION;
+
 # Placeholder for now, not sure if there's going to be code here or not :)
 
 1;

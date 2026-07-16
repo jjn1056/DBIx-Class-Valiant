@@ -1,4 +1,4 @@
-requires 'Valiant', '0.002019';
+requires 'Valiant', '0.002020';
 requires 'DBIx::Class', '0.082843';
 requires 'DBIx::Class::Candy', '0.005003';
 requires 'Carp', '1.50';

@@ -1,6 +1,6 @@
 The following logs changes for the CPAN distribution DBIx-Class-Valiant
 
-0.001001  {{TBD}}
+0.001001  2026 July 15
         - Initial standalone release.  DBIx::Class::Valiant provides
           Ruby-on-Rails-inspired, Valiant-powered domain validations for
           DBIx::Class: filter-on-new, validate-on-insert/update, nested
